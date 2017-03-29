@@ -93,8 +93,8 @@ configuration ConfigS2D
         xCluster FailoverCluster
         {
             Name = $ClusterName
-            AdminCreds = $AdminCreds
             Nodes = $Nodes
+            PsDscRunAsCredential = $AdminCreds
 	        DependsOn = "[WindowsFeature]FCPS"
         }
 
@@ -146,8 +146,8 @@ configuration ConfigS2D
         xNFS EnableNFS
         {
             NFSName = $NFSName
-            AdminCreds = $AdminCreds
             LBIPAddress = $LBIPAddress
+            PsDscRunAsCredential = $AdminCreds
             DependsOn = "[Script]EnableS2D"
         }
 
