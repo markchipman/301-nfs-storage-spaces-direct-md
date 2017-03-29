@@ -28,9 +28,19 @@ Click the button below to deploy from the portal:
 + 	The images used to create this deployment are
 	+ 	Windows Server 2016 Datacenter Edition - Latest Image
 
-+	To successfully deploy this template, be sure that the subnet to which the storage nodes are being deployed already exists on the specified Azure virtual network.
++	To successfully deploy this template it is important that you first prepare your environment as follows:
 
-+   To successfully deploy this template, DNS servers should also be configured for the Azure VNET for resolving  hostnames in the DNS domain in which this cluster is deployed.  Host (A) records should exist in the DNS zone for this domain for each cluster node and the NFS file server role name.
+    +   Be sure that the subnet to which the storage nodes are being deployed already exists on the specified Azure virtual network.
+
+    +   DNS servers should also be configured for the Azure VNET for resolving hostnames in the DNS domain in which this cluster is deployed.  
+    
+    +   Host (A) records should exist in the DNS zone for this domain for each VM cluster node AND the Azure Internal Load Balancer that supplies a floating IP address for the cluster.  
+    
+    For example, if 10.0.0.4, 10.0.0.5 and 10.0.0.6 are the next 3 available IP addresses in your selected VNET subnet, and you are planning to deploy a two-node cluster using "nfs01" as the value for both the namePrefix and nfsName parameters, you should register the following Host (A) records in your DNS zone PRIOR to deploying this template:
+
+    +   nfs01           Host (A)    10.0.0.4
+    +   nfs01-s2d-0     Host (A)    10.0.0.5
+    +   nfs01-s2d-1     Host (A)    10.0.0.6
 
 ## Deploying Sample Templates
 
