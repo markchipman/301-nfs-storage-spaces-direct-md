@@ -66,7 +66,7 @@ function Test-TargetResource
         [string] $NFSName,
 
         [parameter(Mandatory)]
-        [string] $LBIPAddress,
+        [string] $LBIPAddress
 
     )
 
