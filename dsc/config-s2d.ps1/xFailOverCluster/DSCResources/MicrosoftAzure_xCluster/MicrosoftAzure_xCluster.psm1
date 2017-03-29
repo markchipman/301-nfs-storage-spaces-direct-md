@@ -394,7 +394,7 @@ function ImpersonateAs([PSCredential] $cred)
     $userToken
     $ImpersonateLib = Get-ImpersonateLib
 
-    $bLogin = $ImpersonateLib::LogonUser($cred.GetNetworkCredential().UserName, $cred.GetNetworkCredential().Domain, $cred.GetNetworkCredential().Password, 
+    $bLogin = $ImpersonateLib::LogonUser($cred.GetNetworkCredential().UserName, $env:COMPUTERNAME, $cred.GetNetworkCredential().Password, 
     9, 0, [ref]$userToken)
 
     if ($bLogin)
