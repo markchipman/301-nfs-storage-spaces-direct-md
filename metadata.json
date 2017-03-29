@@ -1,0 +1,7 @@
+{
+  "itemDisplayName": "Windows Server 2016 Storage Spaces Direct (S2D) NFS cluster",
+  "description": "This template creates Azure VMs on an existing VNET, and it provisions them as a Windows Server 2016 Storage Spaces Direct (S2D) Network File System (NFS) cluster.",
+  "summary": "This template creates Azure VMs for a Windows Server 2016 Storage Spaces Direct (S2D) NFS cluster on an existing Azure VNET with existing DNS servers.",
+  "githubUsername": "robotechredmond",
+  "dateUpdated": "2017-03-29"
+}
