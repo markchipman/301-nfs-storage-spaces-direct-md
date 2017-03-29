@@ -101,8 +101,8 @@ configuration ConfigS2D
         Script DNSSuffix
         {
             SetScript = "Set-DnsClientGlobalSetting -SuffixSearchList $DomainName"
-            TestScript = "$DomainName -in (Get-DNSClientGlobalSetting).SuffixSearchList"
-            GetScript = "@{Ensure = if (($DomainName -in (Get-DNSClientGlobalSetting).SuffixSearchList) {'Present'} else {'Absent'}}"
+            TestScript = "'$DomainName' -in (Get-DNSClientGlobalSetting).SuffixSearchList"
+            GetScript = "@{Ensure = if (('$DomainName' -in (Get-DNSClientGlobalSetting).SuffixSearchList) {'Present'} else {'Absent'}}"
         }
 
         xFirewall LBProbePortRule
