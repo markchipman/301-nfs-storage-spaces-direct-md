@@ -90,19 +90,19 @@ configuration ConfigS2D
             DependsOn = "[WindowsFeature]NFSService"
         }
 
+        Script DNSSuffix
+        {
+            SetScript = "Set-DnsClientGlobalSetting -SuffixSearchList $DomainName; Set-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\' -Name Domain -Value $DomainName; Set-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\' -Name 'NV Domain' -Value $DomainName"
+            TestScript = "'$DomainName' -in (Get-DNSClientGlobalSetting).SuffixSearchList"
+            GetScript = "@{Ensure = if (('$DomainName' -in (Get-DNSClientGlobalSetting).SuffixSearchList) {'Present'} else {'Absent'}}"
+        }
+
         xCluster FailoverCluster
         {
             Name = $ClusterName
             Nodes = $Nodes
             PsDscRunAsCredential = $AdminCreds
-	        DependsOn = "[WindowsFeature]FCPS"
-        }
-
-        Script DNSSuffix
-        {
-            SetScript = "Set-DnsClientGlobalSetting -SuffixSearchList $DomainName"
-            TestScript = "'$DomainName' -in (Get-DNSClientGlobalSetting).SuffixSearchList"
-            GetScript = "@{Ensure = if (('$DomainName' -in (Get-DNSClientGlobalSetting).SuffixSearchList) {'Present'} else {'Absent'}}"
+	        DependsOn = @("[WindowsFeature]FCPS","[Script]DNSSuffix")
         }
 
         xFirewall LBProbePortRule
@@ -148,7 +148,7 @@ configuration ConfigS2D
             NFSName = $NFSName
             LBIPAddress = $LBIPAddress
             PsDscRunAsCredential = $AdminCreds
-            DependsOn = "[Script]EnableS2D"
+            DependsOn = @("[Script]EnableS2D","[xFirewall]LBProbePortRule")
         }
 
         Script CreateShare
@@ -166,28 +166,4 @@ configuration ConfigS2D
 
     }
 
-}
-
-function Get-NetBIOSName
-{ 
-    [OutputType([string])]
-    param(
-        [string]$DomainName
-    )
-
-    if ($DomainName.Contains('.')) {
-        $length=$DomainName.IndexOf('.')
-        if ( $length -ge 16) {
-            $length=15
-        }
-        return $DomainName.Substring(0,$length)
-    }
-    else {
-        if ($DomainName.Length -gt 15) {
-            return $DomainName.Substring(0,15)
-        }
-        else {
-            return $DomainName
-        }
-    }
 }
