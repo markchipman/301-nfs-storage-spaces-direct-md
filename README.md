@@ -32,9 +32,9 @@ Click the button below to deploy from the portal:
 
     +   Be sure that the subnet to which the storage nodes are being deployed already exists on the specified Azure virtual network.
 
-    +   DNS servers should also be configured for the Azure VNET for resolving hostnames in the DNS domain in which this cluster is deployed.  
+    +   DNS servers should also be configured for the Azure VNET for resolving hostnames in the internal DNS domain in which this cluster is deployed.  
     
-    +   Host (A) records should exist in the DNS zone for this domain for each VM cluster node, the cluster network name AND the Azure Internal Load Balancer that supplies a floating IP address for the cluster.  This can most easily be accomplished by enabling Dynamic DNS Updates for unauthenticated updates to the DNS zone for this domain.
+    +   Host (A) records should exist in the DNS zone for this internal DNS domain for each VM cluster node, the cluster network name AND the Azure Internal Load Balancer that supplies a floating IP address for the cluster.  This can most easily be accomplished by enabling Dynamic DNS Updates for unauthenticated updates to the DNS zone for this internal DNS domain.
     
 ## Deploying Sample Templates
 
