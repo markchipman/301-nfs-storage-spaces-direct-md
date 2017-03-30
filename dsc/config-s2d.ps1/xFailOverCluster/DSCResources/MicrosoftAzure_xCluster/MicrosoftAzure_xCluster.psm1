@@ -15,7 +15,7 @@ function Get-TargetResource
         [string[]] $Nodes
     )
   
-    $cluster = Get-Cluster -Name $Name 
+    $cluster = Get-Cluster -Name $Name -ErrorAction SilentlyContinue
 
     if ($null -eq $cluster)
     {
@@ -24,7 +24,7 @@ function Get-TargetResource
 
     $allNodes = @()
 
-    foreach ($node in ($cluster | Get-ClusterNode))
+    foreach ($node in ($cluster | Get-ClusterNode -ErrorAction SilentlyContinue))
     {
         $allNodes += $node.Name
     }
@@ -58,11 +58,11 @@ function Set-TargetResource
         # for why the following workaround is necessary.
         Write-Verbose -Message "Stopping the Cluster Name resource ..."
             #maker
-        $clusterGroup = $cluster | Get-ClusterGroup
+        $clusterGroup = $cluster | Get-ClusterGroup -ErrorAction SilentlyContinue
         
-        $clusterNameRes = $clusterGroup | Get-ClusterResource "Cluster Name"
+        $clusterNameRes = $clusterGroup | Get-ClusterResource "Cluster Name" -ErrorAction SilentlyContinue
         
-        $clusterNameRes | Stop-ClusterResource | Out-Null
+        $clusterNameRes | Stop-ClusterResource -ErrorAction SilentlyContinue | Out-Null
 
         Sleep 5
         
@@ -70,7 +70,7 @@ function Set-TargetResource
         
         $clusterIpAddrRes = $clusterGroup | Get-ClusterResource | Where-Object { $_.ResourceType.Name -in "IP Address", "IPv6 Address", "IPv6 Tunnel Address" }
         
-        $clusterIpAddrRes | Stop-ClusterResource | Out-Null
+        $clusterIpAddrRes | Stop-ClusterResource -ErrorAction SilentlyContinue | Out-Null
         
         Sleep 5
         
@@ -168,13 +168,13 @@ function Test-TargetResource
     Write-Verbose -Message "Checking if cluster '$($Name)' is present ..."
     try
         {
-            $cluster = Get-Cluster -Name $Name 
-            Write-Verbose -Message "Cluster $($Name)' is present."
-
+            $cluster = Get-Cluster -Name $Name -ErrorAction SilentlyContinue
+            
             if ($cluster)
             {
+                Write-Verbose -Message "Cluster $($Name)' is present."
                 Write-Verbose -Message "Checking if the expected nodes are in cluster $($Name)' ..."
-                $allNodes = Get-ClusterNode -Cluster $Name
+                $allNodes = Get-ClusterNode -Cluster $Name -ErrorAction SilentlyContinue
                 $bRet = $true
                 foreach ($node in $Nodes)
                 {

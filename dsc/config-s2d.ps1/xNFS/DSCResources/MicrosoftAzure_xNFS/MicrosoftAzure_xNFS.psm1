@@ -31,11 +31,11 @@ function Set-TargetResource
 
     )
  
-    $Disks = Get-ClusterResource | Where-Object Name -like "*${NFSName}_*"
+    $Disks = Get-ClusterResource -ErrorAction SilentlyContinue | Where-Object Name -like "*${NFSName}_*"
 
-    Add-ClusterFileServerRole -Storage $Disks.Name -Name $NFSName -StaticAddress $LBIPAddress
+    Add-ClusterFileServerRole -Storage $Disks.Name -Name $NFSName -StaticAddress $LBIPAddress -ErrorAction Stop
 
-    Move-ClusterGroup -Name $NFSName -Node $env:COMPUTERNAME 
+    Move-ClusterGroup -Name $NFSName -Node $env:COMPUTERNAME -ErrorAction Stop
 
     $ClusterNetworkName = "Cluster Network 1"
     $IPResourceName = "IP Address ${LBIPAddress}"
@@ -52,9 +52,9 @@ function Set-TargetResource
         "EnableDhcp"=0
         }
 
-    Stop-ClusterGroup -Name $NFSName
+    Stop-ClusterGroup -Name $NFSName -ErrorAction SilentlyContinue
 
-    Start-ClusterGroup -Name $NFSName
+    Start-ClusterGroup -Name $NFSName -ErrorAction Stop
 
 }
 
