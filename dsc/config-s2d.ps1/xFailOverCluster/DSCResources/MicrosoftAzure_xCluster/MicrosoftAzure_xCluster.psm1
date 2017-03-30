@@ -95,24 +95,10 @@ function Set-TargetResource
         
         $clusterNameRes | Start-ClusterResource -ErrorAction Stop | Out-Null
 
-        Write-Verbose -Message "Starting Cluster '$($Name)' ..."
-        
-        Start-Cluster -Name $Name -ErrorAction Stop | Out-Null
-        
-        Sleep 5
-        
-        (Get-Cluster).SameSubnetThreshold = 20
     }
 
-    $version=[system.environment]::OSVersion.Version
-    if (($version.Major -eq 6) -and ($version.Minor -eq 3))
-    {
-        $nostorage=$true
-    }
-    else
-    {
-        $nostorage=$false
-    } 
+    $nostorage=$true
+  
     Write-Verbose -Message "Adding specified nodes to cluster '$($Name)' ..."
     
     #Add Nodes to cluster
