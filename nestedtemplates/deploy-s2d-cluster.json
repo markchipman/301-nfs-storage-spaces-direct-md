@@ -186,8 +186,8 @@
 								"id": "[variables('lbProbeId')]"
 							},
 							"protocol": "Tcp",
-							"frontendPort": 2409,
-							"backendPort": 2409,
+							"frontendPort": 2049,
+							"backendPort": 2049,
 							"enableFloatingIP": true
 						}
 					}
