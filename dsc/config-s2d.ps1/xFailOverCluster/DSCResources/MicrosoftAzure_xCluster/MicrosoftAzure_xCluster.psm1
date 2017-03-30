@@ -98,12 +98,25 @@ function Set-TargetResource
     }
 
     $nostorage=$true
-  
-    Write-Verbose -Message "Adding specified nodes to cluster '$($Name)' ..."
     
     #Add Nodes to cluster
-    $allNodes = Get-ClusterNode -Cluster $Name
+
+    $allNodes = @()
+
+    While (!$allNodes) {
+
+        Start-Sleep -Seconds 30
+
+        Write-Verbose -Message "Finding nodes in cluster '$($Name)' ..."
+
+        $allNodes = Get-ClusterNode -Cluster $Name -ErrorAction SilentlyContinue
+
+    }
+
+    Write-Verbose -Message "Existing nodes found in cluster '$($Name)' are: $($allNodes) ..."
     
+    Write-Verbose -Message "Adding specified nodes to cluster '$($Name)' ..."
+
     foreach ($node in $Nodes)
     {
         $foundNode = $allNodes | where-object { $_.Name -eq $node }
@@ -120,7 +133,7 @@ function Set-TargetResource
         }
         elseif ($foundNode)
         {
-            Write-Verbose -Message "Node $($node)' already in the cluster, skipping ..."
+            Write-Verbose -Message "Node '$($node)' already in the cluster, skipping ..."
 
             continue
         }
@@ -160,7 +173,21 @@ function Test-TargetResource
             {
                 Write-Verbose -Message "Cluster $($Name)' is present."
                 Write-Verbose -Message "Checking if the expected nodes are in cluster $($Name)' ..."
-                $allNodes = Get-ClusterNode -Cluster $Name -ErrorAction SilentlyContinue
+
+                $allNodes = @()
+
+                While (!$allNodes) {
+
+                    Start-Sleep -Seconds 30
+
+                    Write-Verbose -Message "Finding nodes in cluster '$($Name)' ..."
+
+                    $allNodes = Get-ClusterNode -Cluster $Name -ErrorAction SilentlyContinue
+
+                }
+
+                Write-Verbose -Message "Existing nodes found in cluster '$($Name)' are: $($allNodes) ..."
+
                 $bRet = $true
                 foreach ($node in $Nodes)
                 {
