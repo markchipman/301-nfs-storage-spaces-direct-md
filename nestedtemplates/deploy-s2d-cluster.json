@@ -190,24 +190,6 @@
 							"backendPort": 2409,
 							"enableFloatingIP": true
 						}
-					},
-                    {
-						"name": "nfs-filesystem-udp",
-						"properties": {
-							"frontendIPConfiguration": {
-								"id": "[variables('lbFEConfigId')]"
-							},
-							"backendAddressPool": {
-								"id": "[variables('lbBEPoolId')]"
-							},
-							"probe": {
-								"id": "[variables('lbProbeId')]"
-							},
-							"protocol": "Udp",
-							"frontendPort": 2409,
-							"backendPort": 2409,
-							"enableFloatingIP": true
-						}
 					}
 				],
 				"probes": [
