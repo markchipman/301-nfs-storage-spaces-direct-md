@@ -59,7 +59,7 @@ configuration PrepS2D
         
         Script DNSSuffix
         {
-            SetScript = "Set-DnsClientGlobalSetting -SuffixSearchList $DomainName"
+            SetScript = "Set-DnsClientGlobalSetting -SuffixSearchList $DomainName; Set-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\' -Name Domain -Value $DomainName; Set-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\' -Name 'NV Domain' -Value $DomainName"
             TestScript = "'$DomainName' -in (Get-DNSClientGlobalSetting).SuffixSearchList"
             GetScript = "@{Ensure = if (('$DomainName' -in (Get-DNSClientGlobalSetting).SuffixSearchList) {'Present'} else {'Absent'}}"
         }
