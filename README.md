@@ -1,5 +1,5 @@
 # Create a Storage Spaces Direct (S2D) Network File System (NFS) Cluster with Windows Server 2016 on an existing VNET
-This template will create a Storage Spaces Direct (S2D) Network File System (NFS) cluster using Windows Server 2016 in an existing VNET with existing DNS servers configured.  This cluster will be deployed as a workgroup-mode cluster, and as such, an Active Directory domain is not required.
+This template will create a Storage Spaces Direct (S2D) Network File System (NFS) cluster using Windows Server 2016 in an existing VNET with existing DNS servers configured.  This cluster will be deployed as a workgroup-mode cluster, and as such, an Active Directory domain is not required.  The resulting cluster supports requests from NFS v4.1 clients.
 
 This template creates the following resources by default:
 
@@ -34,13 +34,16 @@ Click the button below to deploy from the portal:
 
     +   DNS servers should also be configured for the Azure VNET for resolving hostnames in the DNS domain in which this cluster is deployed.  
     
-    +   Host (A) records should exist in the DNS zone for this domain for each VM cluster node AND the Azure Internal Load Balancer that supplies a floating IP address for the cluster.  
+    +   Host (A) records should exist in the DNS zone for this domain for each VM cluster node, the cluster network name AND the Azure Internal Load Balancer that supplies a floating IP address for the cluster.  
     
     For example, if 10.0.0.4, 10.0.0.5 and 10.0.0.6 are the next 3 available IP addresses in your selected VNET subnet, and you are planning to deploy a two-node cluster using "nfs01" as the value for both the namePrefix and nfsName parameters, you should register the following Host (A) records in your DNS zone PRIOR to deploying this template:
 
     +   nfs01           Host (A)    10.0.0.4
     +   nfs01-s2d-0     Host (A)    10.0.0.5
     +   nfs01-s2d-1     Host (A)    10.0.0.6
+    +   nfs01-s2d-c     Host (A)    169.254.1.1
+
+    In this example, "nfs01" will be the virtual network name for the clustered NFS file server hostname.
 
 ## Deploying Sample Templates
 
