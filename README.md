@@ -23,7 +23,7 @@ Click the button below to deploy from the portal:
 
 +   The default settings deploy 2 data disks per storage node, but can be increased to up to 32 data disks per node.  When increasing # of data disks, be sure to select a VM size that can support the # of data disks you specify.
 
-+ 	The default settings for compute require that you have at least 2 cores of free quota to deploy.
++ 	The default settings for compute require that you have at least 16 cores of free quota to deploy.
 
 + 	The images used to create this deployment are
 	+ 	Windows Server 2016 Datacenter Edition - Latest Image
