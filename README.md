@@ -34,17 +34,8 @@ Click the button below to deploy from the portal:
 
     +   DNS servers should also be configured for the Azure VNET for resolving hostnames in the DNS domain in which this cluster is deployed.  
     
-    +   Host (A) records should exist in the DNS zone for this domain for each VM cluster node, the cluster network name AND the Azure Internal Load Balancer that supplies a floating IP address for the cluster.  
+    +   Host (A) records should exist in the DNS zone for this domain for each VM cluster node, the cluster network name AND the Azure Internal Load Balancer that supplies a floating IP address for the cluster.  This can most easily be accomplished by enabling Dynamic DNS Updates for unauthenticated updates to the DNS zone for this domain.
     
-    For example, if 10.0.0.4, 10.0.0.5 and 10.0.0.6 are the next 3 available IP addresses in your selected VNET subnet, and you are planning to deploy a two-node cluster using "nfs01" as the value for both the namePrefix and nfsName parameters, you should register the following Host (A) records in your DNS zone PRIOR to deploying this template:
-
-    +   nfs01           Host (A)    10.0.0.4
-    +   nfs01-s2d-0     Host (A)    10.0.0.5
-    +   nfs01-s2d-1     Host (A)    10.0.0.6
-    +   nfs01-s2d-c     Host (A)    169.254.1.1
-
-    In this example, "nfs01" will be the virtual network name for the clustered NFS file server hostname.
-
 ## Deploying Sample Templates
 
 You can deploy these samples directly through the Azure Portal or by using the scripts supplied in the root of the repo.
