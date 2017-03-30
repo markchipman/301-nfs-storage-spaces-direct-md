@@ -90,21 +90,6 @@ configuration ConfigS2D
             DependsOn = "[WindowsFeature]NFSService"
         }
 
-        Script DNSSuffix
-        {
-            SetScript = "Set-DnsClientGlobalSetting -SuffixSearchList $DomainName; Set-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\' -Name Domain -Value $DomainName; Set-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\' -Name 'NV Domain' -Value $DomainName"
-            TestScript = "'$DomainName' -in (Get-DNSClientGlobalSetting).SuffixSearchList"
-            GetScript = "@{Ensure = if (('$DomainName' -in (Get-DNSClientGlobalSetting).SuffixSearchList) {'Present'} else {'Absent'}}"
-        }
-
-        xCluster FailoverCluster
-        {
-            Name = $ClusterName
-            Nodes = $Nodes
-            PsDscRunAsCredential = $AdminCreds
-	        DependsOn = @("[WindowsFeature]FCPS","[Script]DNSSuffix")
-        }
-
         xFirewall LBProbePortRule
         {
             Direction = "Inbound"
@@ -117,6 +102,29 @@ configuration ConfigS2D
             Protocol = "TCP"
             LocalPort = "59001" -as [String]
             Ensure = "Present"
+        }
+
+        Script DNSSuffix
+        {
+            SetScript = "Set-DnsClientGlobalSetting -SuffixSearchList $DomainName; Set-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\' -Name Domain -Value $DomainName; Set-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\' -Name 'NV Domain' -Value $DomainName"
+            TestScript = "'$DomainName' -in (Get-DNSClientGlobalSetting).SuffixSearchList"
+            GetScript = "@{Ensure = if (('$DomainName' -in (Get-DNSClientGlobalSetting).SuffixSearchList) {'Present'} else {'Absent'}}"
+        }
+
+        Script FirewallProfile
+        {
+            SetScript = 'Get-NetConnectionProfile | Where-Object NetworkCategory -eq "Public" | Set-NetConnectionProfile -NetworkCategory Private; $global:DSCMachineStatus = 1'
+            TestScript = '(Get-NetConnectionProfile | Where-Object NetworkCategory -eq "Public").Count -eq 0'
+            GetScript = '@{Ensure = if ((Get-NetConnectionProfile | Where-Object NetworkCategory -eq "Public").Count -eq 0) {"Present"} else {"Absent"}}'
+            DependsOn = "[Script]DNSSuffix"
+        }
+
+        xCluster FailoverCluster
+        {
+            Name = $ClusterName
+            Nodes = $Nodes
+            PsDscRunAsCredential = $AdminCreds
+	        DependsOn = @("[WindowsFeature]FCPS","[Script]FirewallProfile")
         }
 
         Script CloudWitness
