@@ -10,6 +10,9 @@ function Get-TargetResource
         [string] $NFSName,
 
         [parameter(Mandatory)]
+        [string] $ShareName,
+
+        [parameter(Mandatory)]
         [string] $LBIPAddress
 
     )
@@ -25,6 +28,9 @@ function Set-TargetResource
     (
         [parameter(Mandatory)]
         [string] $NFSName,
+
+        [parameter(Mandatory)]
+        [string] $ShareName,
 
         [parameter(Mandatory)]
         [string] $LBIPAddress
@@ -57,6 +63,12 @@ function Set-TargetResource
 
     Start-Sleep -Seconds 60
 
+    New-Item -Path "F:\${ShareName}" -ItemType Directory -Verbose -ErrorAction SilentlyContinue
+    
+    New-NfsShare -Name "${ShareName}" -Path "F:\${ShareName}" -EnableUnmappedAccess $True -Authentication SYS -AllowRootAccess $True -Permission ReadWrite -Verbose
+    
+    Start-Process -FilePath "${env:SystemRoot}\System32\nfsfile.exe" -ArgumentList "/r m=777 F:\${ShareName}" -Wait
+
 }
 
 function Test-TargetResource
@@ -66,6 +78,9 @@ function Test-TargetResource
         [parameter(Mandatory)]
         [string] $NFSName,
 
+        [parameter(Mandatory)]
+        [string] $ShareName,
+        
         [parameter(Mandatory)]
         [string] $LBIPAddress
 

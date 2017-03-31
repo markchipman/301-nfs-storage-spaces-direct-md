@@ -155,17 +155,9 @@ configuration ConfigS2D
         {
             NFSName = $NFSName
             LBIPAddress = $LBIPAddress
+            ShareName = $ShareName
             PsDscRunAsCredential = $AdminCreds
             DependsOn = @("[Script]EnableS2D","[xFirewall]LBProbePortRule")
-        }
-
-        Script CreateShare
-        {
-            SetScript = "New-Item -Path F:\${ShareName} -ItemType Directory -Verbose -ErrorAction SilentlyContinue; New-NfsShare -Name ${ShareName} -Path F:\${ShareName} -EnableUnmappedAccess `$True -Authentication SYS -AllowRootAccess `$True -Permission ReadWrite -Verbose; Start-Process -FilePath '${env:SystemRoot}\System32\nfsfile.exe' -ArgumentList '/r m=777 F:\${ShareName}' -Wait"
-            TestScript = "(Get-NfsShare -Name ${ShareName} -ErrorAction SilentlyContinue).IsOnline -eq `$True"
-            GetScript = "@{Ensure = if ((Get-NfsShare -Name ${ShareName} -ErrorAction SilentlyContinue).IsOnline -eq `$True) {'Present'} Else {'Absent'}}"
-            PsDscRunAsCredential = $AdminCreds
-            DependsOn = "[xNFS]EnableNFS"
         }
 
         LocalConfigurationManager 
