@@ -33,17 +33,16 @@ function Set-TargetResource
  
     $Disks = Get-ClusterResource -ErrorAction SilentlyContinue | Where-Object Name -like "*${NFSName}_*"
 
-    Add-ClusterFileServerRole -Storage $Disks.Name -Name $NFSName -StaticAddress $LBIPAddress -ErrorAction Stop
+    Add-ClusterFileServerRole -Storage $Disks.Name -Name $NFSName -StaticAddress $LBIPAddress -ErrorAction Stop -Verbose
 
-    Move-ClusterGroup -Name $NFSName -Node $env:COMPUTERNAME -ErrorAction Stop
+    Move-ClusterGroup -Name $NFSName -Node $env:COMPUTERNAME -ErrorAction Stop -Verbose
 
     $ClusterNetworkName = "Cluster Network 1"
     $IPResourceName = "IP Address ${LBIPAddress}"
     $ProbePort = "59001"
 
     Get-ClusterResource $IPResourceName | 
-    Set-ClusterParameter `
-    -Multiple @{
+    Set-ClusterParameter -Verbose -Multiple @{
         "Address"="$LBIPAddress";
         "ProbePort"="$ProbePort";
         "SubnetMask"="255.255.255.255";
@@ -52,9 +51,9 @@ function Set-TargetResource
         "EnableDhcp"=0
         }
 
-    Stop-ClusterGroup -Name $NFSName -ErrorAction SilentlyContinue
+    Stop-ClusterGroup -Name $NFSName -ErrorAction SilentlyContinue -Verbose
 
-    Start-ClusterGroup -Name $NFSName -ErrorAction Stop
+    Start-ClusterGroup -Name $NFSName -ErrorAction Stop -Verbose
 
     Start-Sleep -Seconds 60
 

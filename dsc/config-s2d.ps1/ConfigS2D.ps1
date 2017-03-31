@@ -106,14 +106,14 @@ configuration ConfigS2D
 
         Script DNSSuffix
         {
-            SetScript = "Set-DnsClientGlobalSetting -SuffixSearchList $DomainName; Set-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\' -Name Domain -Value $DomainName; Set-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\' -Name 'NV Domain' -Value $DomainName"
+            SetScript = "Set-DnsClientGlobalSetting -SuffixSearchList $DomainName -Verbose; Set-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\' -Name Domain -Value $DomainName; Set-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\' -Name 'NV Domain' -Value $DomainName -Verbose"
             TestScript = "'$DomainName' -in (Get-DNSClientGlobalSetting).SuffixSearchList"
             GetScript = "@{Ensure = if (('$DomainName' -in (Get-DNSClientGlobalSetting).SuffixSearchList) {'Present'} else {'Absent'}}"
         }
 
         Script FirewallProfile
         {
-            SetScript = 'Get-NetConnectionProfile | Where-Object NetworkCategory -eq "Public" | Set-NetConnectionProfile -NetworkCategory Private; $global:DSCMachineStatus = 1'
+            SetScript = 'Get-NetConnectionProfile | Where-Object NetworkCategory -eq "Public" | Set-NetConnectionProfile -NetworkCategory Private -Verbose; $global:DSCMachineStatus = 1'
             TestScript = '(Get-NetConnectionProfile | Where-Object NetworkCategory -eq "Public").Count -eq 0'
             GetScript = '@{Ensure = if ((Get-NetConnectionProfile | Where-Object NetworkCategory -eq "Public").Count -eq 0) {"Present"} else {"Absent"}}'
             DependsOn = "[Script]DNSSuffix"
@@ -129,7 +129,7 @@ configuration ConfigS2D
 
         Script CloudWitness
         {
-            SetScript = "Set-ClusterQuorum -CloudWitness -AccountName ${witnessStorageName} -AccessKey $($witnessStorageKey.GetNetworkCredential().Password)"
+            SetScript = "Set-ClusterQuorum -CloudWitness -AccountName ${witnessStorageName} -AccessKey $($witnessStorageKey.GetNetworkCredential().Password) -Verbose"
             TestScript = "(Get-ClusterQuorum).QuorumResource.Name -eq 'Cloud Witness'"
             GetScript = "@{Ensure = if ((Get-ClusterQuorum).QuorumResource.Name -eq 'Cloud Witness') {'Present'} else {'Absent'}}"
             DependsOn = "[xCluster]FailoverCluster"
@@ -145,7 +145,7 @@ configuration ConfigS2D
 
         Script EnableS2D
         {
-            SetScript = "Enable-ClusterS2D -Confirm:0; New-Volume -StoragePoolFriendlyName S2D* -FriendlyName ${NFSName}_vol0 -FileSystem NTFS -DriveLetter F -UseMaximumSize -ResiliencySettingName Mirror"
+            SetScript = "Enable-ClusterS2D -Confirm:0 -Verbose; New-Volume -StoragePoolFriendlyName S2D* -FriendlyName ${NFSName}_vol0 -FileSystem NTFS -DriveLetter F -UseMaximumSize -ResiliencySettingName Mirror -Verbose"
             TestScript = "(Get-Volume -DriveLetter F -ErrorAction SilentlyContinue).OperationalStatus -eq 'OK'"
             GetScript = "@{Ensure = if ((Get-Volume -DriveLetter F -ErrorAction SilentlyContinue).OperationalStatus -eq 'OK') {'Present'} Else {'Absent'}}"
             DependsOn = "[Script]IncreaseClusterTimeouts"
