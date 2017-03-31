@@ -161,9 +161,10 @@ configuration ConfigS2D
 
         Script CreateShare
         {
-            SetScript = "New-Item -Path F:\${ShareName} -ItemType Directory; New-NfsShare -Name ${ShareName} -Path F:\${ShareName} -EnableUnmappedAccess `$True -Authentication SYS -AllowRootAccess `$True -Permission ReadWrite; NFSFILE /r m=777 F:\${ShareName}"
+            SetScript = "New-Item -Path F:\${ShareName} -ItemType Directory; New-NfsShare -Name ${ShareName} -Path F:\${ShareName} -EnableUnmappedAccess `$True -Authentication SYS -AllowRootAccess `$True -Permission ReadWrite; NFSFILE.EXE /r m=777 F:\${ShareName}"
             TestScript = "(Get-NfsShare -Name ${ShareName} -ErrorAction SilentlyContinue).IsOnline -eq `$True"
             GetScript = "@{Ensure = if ((Get-NfsShare -Name ${ShareName} -ErrorAction SilentlyContinue).IsOnline -eq `$True) {'Present'} Else {'Absent'}}"
+            PsDscRunAsCredential = $AdminCreds
             DependsOn = "[xNFS]EnableNFS"
         }
 
