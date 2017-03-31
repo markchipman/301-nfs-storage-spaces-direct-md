@@ -151,6 +151,8 @@ configuration ConfigS2D
             DependsOn = "[Script]IncreaseClusterTimeouts"
         }
 
+
+
         xNFS EnableNFS
         {
             NFSName = $NFSName
@@ -161,7 +163,7 @@ configuration ConfigS2D
 
         Script CreateShare
         {
-            SetScript = "New-Item -Path F:\${ShareName} -ItemType Directory; New-NfsShare -Name ${ShareName} -Path F:\${ShareName} -EnableUnmappedAccess `$True -Authentication SYS -AllowRootAccess `$True -Permission ReadWrite; NFSFILE.EXE /r m=777 F:\${ShareName}"
+            SetScript = "New-Item -Path F:\Shared -ItemType Directory -Verbose; New-NfsShare -Name ${ShareName} -Path F:\Shared\${ShareName} -EnableUnmappedAccess `$True -Authentication SYS -AllowRootAccess `$True -Permission ReadWrite -Verbose; NFSFILE.EXE /r m=777 F:\Shared\${ShareName}"
             TestScript = "(Get-NfsShare -Name ${ShareName} -ErrorAction SilentlyContinue).IsOnline -eq `$True"
             GetScript = "@{Ensure = if ((Get-NfsShare -Name ${ShareName} -ErrorAction SilentlyContinue).IsOnline -eq `$True) {'Present'} Else {'Absent'}}"
             PsDscRunAsCredential = $AdminCreds

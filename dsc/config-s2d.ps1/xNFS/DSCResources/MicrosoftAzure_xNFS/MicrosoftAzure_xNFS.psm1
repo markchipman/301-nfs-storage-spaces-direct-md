@@ -56,6 +56,8 @@ function Set-TargetResource
 
     Start-ClusterGroup -Name $NFSName -ErrorAction Stop
 
+    Start-Sleep -Seconds 60
+
 }
 
 function Test-TargetResource
