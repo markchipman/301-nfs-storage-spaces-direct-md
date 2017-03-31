@@ -63,7 +63,7 @@ function Set-TargetResource
 
     Start-Sleep -Seconds 60
 
-    New-Item -Path "F:\${ShareName}" -ItemType Directory -Verbose -ErrorAction SilentlyContinue
+    [system.io.directory]::CreateDirectory("F:\${ShareName}")
     
     New-NfsShare -Name "${ShareName}" -Path "F:\${ShareName}" -EnableUnmappedAccess $True -Authentication SYS -AllowRootAccess $True -Permission ReadWrite -Verbose
     
