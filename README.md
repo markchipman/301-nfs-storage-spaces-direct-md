@@ -44,7 +44,7 @@ To deploy the sammple using the Azure Portal, click the **Deploy to Azure** butt
 
 To deploy the sample via the command line (using [Azure PowerShell or the Azure CLI](https://azure.microsoft.com/en-us/downloads/)) you can use the scripts.
 
-Simple execute the script and pass in the folder name of the sample you want to deploy.  For example:
+Simply execute the script and pass in the folder name of the sample you want to deploy.  For example:
 
 ```PowerShell
 .\Deploy-AzureResourceGroup.ps1 -ResourceGroupLocation 'eastus' -ArtifactsStagingDirectory '[foldername]'
