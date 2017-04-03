@@ -23,15 +23,6 @@
         "description": "Enable (true) or Disable (false) Accelerated Networking - if enabling, make sure you are selecting appropriate VM Size and Region"
       }
     },
-    "vmCount": {
-      "type": "int",
-      "minValue": 2,
-      "maxValue": 3,
-      "metadata": {
-        "description": "Number of S2D VMs to be created in cluster (Min=2, Max=3)"
-      },
-      "defaultValue": 2
-    },
     "vmDiskSize": {
       "type": "int",
       "minValue": 128,
@@ -117,6 +108,7 @@
     }
   },
   "variables": {
+    "vmCount": 2,
     "subnetRef": "[resourceId(parameters('existingVirtualNetworkRGName'),'Microsoft.Network/virtualNetworks/subnets',parameters('existingVirtualNetworkName'),parameters('existingSubnetName'))]",
     "deployS2DClusterTemplateURL": "[concat(parameters('_artifactsLocation'),'/nestedtemplates/deploy-s2d-cluster.json',parameters('_artifactsLocationSasToken'))]",
     "deployS2DCluster": "deployS2DCluster"
@@ -156,7 +148,7 @@
             "value": "[parameters('enableAcceleratedNetworking')]"
           },
           "vmCount": {
-            "value": "[parameters('vmCount')]"
+            "value": "[variables('vmCount')]"
           },
           "vmDiskSize": {
             "value": "[parameters('vmDiskSize')]"
