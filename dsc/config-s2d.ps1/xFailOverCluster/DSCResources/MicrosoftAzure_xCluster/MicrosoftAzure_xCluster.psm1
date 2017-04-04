@@ -15,7 +15,7 @@ function Get-TargetResource
         [string[]] $Nodes
     )
   
-    $cluster = Get-Cluster -Name $Name -ErrorAction SilentlyContinue
+    $cluster = Get-Cluster -Name . -ErrorAction SilentlyContinue
 
     if ($null -eq $cluster)
     {
@@ -167,7 +167,7 @@ function Test-TargetResource
     Write-Verbose -Message "Checking if cluster '$($Name)' is present ..."
     try
         {
-            $cluster = Get-Cluster -Name $Name -ErrorAction SilentlyContinue
+            $cluster = Get-Cluster -Name . -ErrorAction SilentlyContinue
             
             if ($cluster)
             {
@@ -182,7 +182,7 @@ function Test-TargetResource
 
                     Write-Verbose -Message "Finding nodes in cluster '$($Name)' ..."
 
-                    $allNodes = Get-ClusterNode -Cluster $Name -ErrorAction SilentlyContinue
+                    $allNodes = Get-ClusterNode -Cluster . -ErrorAction SilentlyContinue
 
                 }
 

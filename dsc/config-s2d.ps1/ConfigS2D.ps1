@@ -119,12 +119,21 @@ configuration ConfigS2D
             DependsOn = "[Script]DNSSuffix"
         }
 
+        Script EnableSSH
+        {
+            SetScript = 'Invoke-Expression ((New-Object System.Net.WebClient).DownloadString("https://chocolatey.org/install.ps1")); choco install openssh -params "/SSHServerFeature /KeyBasedAuthenticationFeature" -y; $global:DSCMachineStatus = 1'
+            TestScript = "(Get-Service -Name sshd -ErrorAction SilentlyContinue).Status -eq 'Running'"
+            GetScript = "@{Ensure = if ((Get-Service -Name sshd -ErrorAction SilentlyContinue).Status -eq 'Running') {'Present'} Else {'Absent'}}"
+            PsDscRunAsCredential = $AdminCreds
+            DependsOn = "[Script]FirewallProfile"
+        }
+
         xCluster FailoverCluster
         {
             Name = $ClusterName
             Nodes = $Nodes
             PsDscRunAsCredential = $AdminCreds
-	        DependsOn = @("[WindowsFeature]FCPS","[Script]FirewallProfile")
+	        DependsOn = @("[WindowsFeature]FCPS","[Script]EnableSSH")
         }
 
         Script CloudWitness
@@ -158,15 +167,6 @@ configuration ConfigS2D
             ShareName = $ShareName
             PsDscRunAsCredential = $AdminCreds
             DependsOn = @("[Script]EnableS2D","[xFirewall]LBProbePortRule")
-        }
-
-        Script EnableSSH
-        {
-            SetScript = 'Invoke-Expression ((New-Object System.Net.WebClient).DownloadString("https://chocolatey.org/install.ps1")); choco install openssh -params "/SSHServerFeature /KeyBasedAuthenticationFeature" -y; $global:DSCMachineStatus = 1'
-            TestScript = "(Get-Service -Name sshd -ErrorAction SilentlyContinue).Status -eq 'Running'"
-            GetScript = "@{Ensure = if ((Get-Service -Name sshd -ErrorAction SilentlyContinue).Status -eq 'Running') {'Present'} Else {'Absent'}}"
-            PsDscRunAsCredential = $AdminCreds
-            DependsOn = "[Script]FirewallProfile"
         }
 
         LocalConfigurationManager 
