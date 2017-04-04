@@ -86,6 +86,15 @@ configuration PrepS2D
             DependsOn = "[Script]DNSSuffix"
         }
 
+        Script EnableSSH
+        {
+            SetScript = 'Invoke-Expression ((New-Object System.Net.WebClient).DownloadString("https://chocolatey.org/install.ps1")); choco install openssh -params "/SSHServerFeature /KeyBasedAuthenticationFeature" -y; $global:DSCMachineStatus = 1'
+            TestScript = "(Get-Service -Name sshd -ErrorAction SilentlyContinue).Status -eq 'Running'"
+            GetScript = "@{Ensure = if ((Get-Service -Name sshd -ErrorAction SilentlyContinue).Status -eq 'Running') {'Present'} Else {'Absent'}}"
+            PsDscRunAsCredential = $AdminCreds
+            DependsOn = "[Script]FirewallProfile"
+        }
+
         LocalConfigurationManager 
         {
             RebootNodeIfNeeded = $True

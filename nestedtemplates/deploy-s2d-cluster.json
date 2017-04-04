@@ -190,6 +190,24 @@
 							"backendPort": 2049,
 							"enableFloatingIP": true
 						}
+					},
+                    {
+						"name": "ssh-admin-tcp",
+						"properties": {
+							"frontendIPConfiguration": {
+								"id": "[variables('lbFEConfigId')]"
+							},
+							"backendAddressPool": {
+								"id": "[variables('lbBEPoolId')]"
+							},
+							"probe": {
+								"id": "[variables('lbProbeId')]"
+							},
+							"protocol": "Tcp",
+							"frontendPort": 22,
+							"backendPort": 22,
+							"enableFloatingIP": false
+						}
 					}
 				],
 				"probes": [
