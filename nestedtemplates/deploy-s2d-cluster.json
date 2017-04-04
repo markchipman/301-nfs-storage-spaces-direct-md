@@ -192,7 +192,7 @@
 						}
 					},
                     {
-						"name": "ssh-admin-tcp",
+						"name": "ssh-tcp",
 						"properties": {
 							"frontendIPConfiguration": {
 								"id": "[variables('lbFEConfigId')]"
@@ -206,6 +206,7 @@
 							"protocol": "Tcp",
 							"frontendPort": 22,
 							"backendPort": 22,
+                            "idleTimeoutInMinutes": 30,
 							"enableFloatingIP": false
 						}
 					}
