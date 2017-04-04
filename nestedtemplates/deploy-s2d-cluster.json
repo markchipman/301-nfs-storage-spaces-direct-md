@@ -380,7 +380,7 @@
         }
     ],
     "outputs": {
-        "sofsName": {
+        "nfsName": {
             "type": "string",
             "value": "[parameters('nfsName')]"
         },

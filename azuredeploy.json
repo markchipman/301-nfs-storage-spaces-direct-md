@@ -173,7 +173,7 @@
     }
   ],
   "outputs": {
-    "sofsPath": {
+    "nfsPath": {
       "type": "string",
       "value": "[concat(reference(variables('deployS2DCluster')).outputs.nfsName.value,'.',reference(variables('deployS2DCluster')).outputs.domainName.value,':/',reference(variables('deployS2DCluster')).outputs.shareName.value)]"
     }
