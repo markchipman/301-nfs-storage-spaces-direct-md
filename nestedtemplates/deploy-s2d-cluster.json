@@ -332,7 +332,7 @@
                 "publisher": "Microsoft.Powershell",
                 "type": "DSC",
                 "typeHandlerVersion": "2.20",
-                "autoUpgradeMinorVersion": true,
+                "autoUpgradeMinorVersion": false,
                 "settings": {
                     "modulesUrl": "[variables('s2dPrepModulesURL')]",
                     "configurationFunction": "[variables('s2dPrepFunction')]",
@@ -365,7 +365,7 @@
                 "publisher": "Microsoft.Powershell",
                 "type": "DSC",
                 "typeHandlerVersion": "2.20",
-                "autoUpgradeMinorVersion": true,
+                "autoUpgradeMinorVersion": false,
                 "settings": {
                     "modulesUrl": "[variables('s2dConfigModulesURL')]",
                     "configurationFunction": "[variables('s2dConfigFunction')]",
