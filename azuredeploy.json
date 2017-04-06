@@ -88,9 +88,9 @@
     "shareName": {
       "type": "string",
       "metadata": {
-        "description": "Name of shared data folder on clustered NFS File Server role"
+        "description": "Name of exported shared data folder on clustered NFS File Server role"
       },
-      "defaultValue": "nfsdata"
+      "defaultValue": "data"
     },
     "_artifactsLocation": {
       "type": "string",

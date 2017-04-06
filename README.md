@@ -35,6 +35,16 @@ Click the button below to deploy from the portal:
     +   DNS servers should also be configured for the Azure VNET for resolving hostnames in the internal DNS domain in which this cluster is deployed.  
     
     +   Host (A) records should exist in the DNS zone for this internal DNS domain for each VM cluster node, the cluster network name AND the Azure Internal Load Balancer that supplies a floating IP address for the cluster.  This can most easily be accomplished by enabling Dynamic DNS Updates for unauthenticated updates to the DNS zone for this internal DNS domain.
+
++   After successfully deploying this solution, you can connect to the deployed NFS file server role via common command-line tools, such as "showmount", "mount" and "ssh".  For example:
+
+    +   Show exported shared folders on NFS server - "showmount -e nfs01.contoso.com"
+
+    +   Mount exported shares folder from NFS server - "sudo mount -t nfs -o vers=4.1 nfs01.contoso.com:/data /mnt/data"
+
+    +   Open command prompt on NFS server for admin tasks - "ssh adminuser@nfs01.contoso.com"
+
+    +   For more details on managing the NFS server, see <a href="http://aka.ms/nfs" target="_blank">http://aka.ms/nfs</a>
     
 ## Deploying Sample Templates
 
