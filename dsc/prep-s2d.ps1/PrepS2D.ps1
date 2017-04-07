@@ -74,8 +74,8 @@ configuration PrepS2D
         Script WindowsUpdate
         {
             SetScript = "Set-ItemProperty -Path HKLM:\Software\Policies\Microsoft\Windows\WindowsUpdate\AU -Name AUOptions -Value 4 -Type DWord; Set-ItemProperty -Path HKLM:\Software\Policies\Microsoft\Windows\WindowsUpdate\AU -Name ScheduledInstallDay -Value 7 -Type DWord; Set-ItemProperty -Path HKLM:\Software\Policies\Microsoft\Windows\WindowsUpdate\AU -Name ScheduledInstallTime -Value 4 -Type DWord"
-            TestScript = "(Get-ItemProperty -Path HKLM:\Software\Policies\Microsoft\Windows\WindowsUpdate\AU -Name AUOptions -ErrorAction SilentlyContinue).GetValue() -eq 4"
-            GetScript = "@{Ensure = if ((Get-ItemProperty -Path HKLM:\Software\Policies\Microsoft\Windows\WindowsUpdate\AU -Name AUOptions -ErrorAction SilentlyContinue).GetValue() -eq 4) {'Present'} else {'Absent'}}"
+            TestScript = "(Get-ItemProperty -Path HKLM:\Software\Policies\Microsoft\Windows\WindowsUpdate\AU -Name AUOptions -ErrorAction SilentlyContinue).AUOptions -eq 4"
+            GetScript = "@{Ensure = if ((Get-ItemProperty -Path HKLM:\Software\Policies\Microsoft\Windows\WindowsUpdate\AU -Name AUOptions -ErrorAction SilentlyContinue).AUOptions -eq 4) {'Present'} else {'Absent'}}"
         }
 
         Script DNSSuffix
