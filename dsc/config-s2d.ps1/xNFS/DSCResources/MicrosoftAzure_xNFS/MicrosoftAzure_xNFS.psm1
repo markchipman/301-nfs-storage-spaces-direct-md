@@ -71,6 +71,8 @@ function Set-TargetResource
 
     Set-NfsServerConfiguration -LeasePeriodSec 10 -GracePeriodSec 20
 
+    Restart-Service -Name NfsService
+
     (Get-ClusterGroup) | Foreach-Object {$_.AutoFailbackType = 1}
 
 }
