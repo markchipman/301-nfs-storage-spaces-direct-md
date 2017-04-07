@@ -71,6 +71,13 @@ configuration PrepS2D
             Ensure = "Present"
         }
         
+        Script WindowsUpdate
+        {
+            SetScript = "Set-ItemProperty -Path HKLM:\Software\Policies\Microsoft\Windows\WindowsUpdate\AU -Name AUOptions -Value 4 -Type DWord; Set-ItemProperty -Path HKLM:\Software\Policies\Microsoft\Windows\WindowsUpdate\AU -Name ScheduledInstallDay -Value 7 -Type DWord; Set-ItemProperty -Path HKLM:\Software\Policies\Microsoft\Windows\WindowsUpdate\AU -Name ScheduledInstallTime -Value 4 -Type DWord"
+            TestScript = "(Get-ItemProperty -Path HKLM:\Software\Policies\Microsoft\Windows\WindowsUpdate\AU -Name AUOptions -ErrorAction SilentlyContinue).GetValue() -eq 4"
+            GetScript = "@{Ensure = if ((Get-ItemProperty -Path HKLM:\Software\Policies\Microsoft\Windows\WindowsUpdate\AU -Name AUOptions -ErrorAction SilentlyContinue).GetValue() -eq 4) {'Present'} else {'Absent'}}"
+        }
+
         Script DNSSuffix
         {
             SetScript = "Set-DnsClientGlobalSetting -SuffixSearchList $DomainName; Set-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\' -Name Domain -Value $DomainName; Set-ItemProperty 'HKLM:\SYSTEM\CurrentControlSet\Services\Tcpip\Parameters\' -Name 'NV Domain' -Value $DomainName"
