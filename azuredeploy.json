@@ -162,9 +162,6 @@
           "shareName": {
             "value": "[parameters('shareName')]"
           },
-          "imageSKU": {
-            "value":"2016-Datacenter-Server-Core"
-          },
           "_artifactsLocation": {
             "value": "[parameters('_artifactsLocation')]"
           },
