@@ -69,6 +69,10 @@ function Set-TargetResource
     
     Start-Process -FilePath "${env:SystemRoot}\System32\nfsfile.exe" -ArgumentList "/r m=777 F:\${ShareName}" -Wait
 
+    Set-NfsServerConfiguration -LeasePeriodSec 10 -GracePeriodSec 20
+
+    (Get-ClusterGroup) | Foreach-Object {$_.AutoFailbackType = 1}
+
 }
 
 function Test-TargetResource
