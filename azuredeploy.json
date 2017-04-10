@@ -78,6 +78,26 @@
         "description": "Name of the existing subnet in the existing VNET to which the S2D VMs should be deployed"
       }
     },
+    "enableAutomaticPatching": {
+      "type": "string",
+      "allowedValues": [
+        "Enabled",
+        "Disabled"
+      ],
+      "metadata": {
+        "description": "Enable or disable automatic patching of system updates"
+      },
+      "defaultValue": "Enabled"
+    },
+    "automaticPatchingHour": {
+      "type": "int",
+      "minValue": 1,
+      "maxValue": 21,
+      "metadata": {
+        "description": "Scheduled hour to begin automatic patching of system updates each day, if enabled"
+      },
+      "defaultValue": 1
+    },
     "nfsName": {
       "type": "string",
       "metadata": {
@@ -155,6 +175,12 @@
           },
           "vmDiskCount": {
             "value": "[parameters('vmDiskCount')]"
+          },
+          "enableAutomaticPatching": {
+            "value": "[parameters('enableAutomaticPatching')]"
+          },
+          "AutomaticPatchingHour": {
+            "value": "[parameters('automaticPatchingHour')]"
           },
           "nfsName": {
             "value": "[parameters('nfsName')]"

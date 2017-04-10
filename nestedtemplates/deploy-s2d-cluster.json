@@ -71,6 +71,20 @@
                 "description": "Number of data disks on each S2D VM (Min=2, Max=32). Ensure that the VM size you've selected will support this number of data disks."
             }
         },
+        "enableAutomaticPatching": {
+            "type": "string",
+            "metadata": {
+                "description": "Enable or disable automatic patching of system updates"
+            }
+        },
+        "automaticPatchingHour": {
+            "type": "int",
+            "minValue": 1,
+            "maxValue": 21,
+            "metadata": {
+                "description": "Scheduled hour to begin automatic patching of system updates each day, if enabled"
+            }
+        },
         "nfsName": {
             "type": "string",
             "metadata": {
@@ -338,6 +352,8 @@
                     "configurationFunction": "[variables('s2dPrepFunction')]",
                     "properties": {
                         "domainName": "[parameters('domainName')]",
+                        "enableAutomaticPatching": "[parameters('enableAutomaticPatching')]",
+                        "automaticPatchingHour": "[parameters('automaticPatchingHour')]",
                         "adminCreds": {
                             "userName": "[parameters('adminUserName')]",
                             "password": "PrivateSettingsRef:adminPassword"
@@ -378,6 +394,8 @@
                         "vmNamePrefix": "[variables('vmNamePrefix')]",
                         "vmCount": "[parameters('vmCount')]",
                         "vmDiskSize": "[parameters('vmDiskSize')]",
+                        "enableAutomaticPatching": "[parameters('enableAutomaticPatching')]",
+                        "automaticPatchingHour": "[parameters('automaticPatchingHour')]",
                         "witnessStorageName": "[variables('witnessStorageName')]",
                         "witnessStorageKey": {
                             "userName": "PLACEHOLDER-DO-NOT-USE",
