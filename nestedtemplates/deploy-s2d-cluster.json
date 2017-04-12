@@ -423,7 +423,7 @@
             "dependsOn": [
                 "virtualMachineLoop",
                 "virtualMachineExtensionLoop",
-                "[concat(variables('vmNamePrefix'),'0/s2dConfig')]"
+                "[resourceId('Microsoft.Compute/virtualMachines/extensions', concat(variables('vmNamePrefix'),'0'), 's2dConfig')]"
             ],
             "copy": {
                 "name": "IaaSAntimalwareExtensionLoop",
