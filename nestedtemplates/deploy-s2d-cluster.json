@@ -436,7 +436,7 @@
                 "autoUpgradeMinorVersion": true,
                 "settings": {
                     "AntimalwareEnabled": "true",
-                    "RealtimeProtectionEnabled": "true",
+                    "RealtimeProtectionEnabled": "false",
                     "ScheduledScanSettings": {
                         "isEnabled": "true",
                         "scanType": "Quick",
