@@ -39,12 +39,6 @@ configuration PrepS2D
             Ensure = "Present"
         }
 
-        WindowsFeature FCMgmt
-        {
-            Name = "RSAT-Clustering-Mgmt"
-            Ensure = "Present"
-        }
-
         WindowsFeature FS
         {
             Name = "FS-FileServer"
@@ -56,12 +50,6 @@ configuration PrepS2D
             Name = "FS-NFS-Service"
             Ensure = "Present"
         }        
-
-        WindowsFeature NFSAdmin
-        {
-            Name = "RSAT-NFS-Admin"
-            Ensure = "Present"
-        }
 
         xFirewall LBProbePortRule
         {

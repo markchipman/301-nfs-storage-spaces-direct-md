@@ -70,13 +70,6 @@ configuration ConfigS2D
             DependsOn = "[WindowsFeature]FC"
         }
 
-        WindowsFeature FCMgmt
-        {
-            Name = "RSAT-Clustering-Mgmt"
-            Ensure = "Present"
-            DependsOn = "[WindowsFeature]FC"
-        }
-
         WindowsFeature FS
         {
             Name = "FS-FileServer"
@@ -88,13 +81,6 @@ configuration ConfigS2D
             Name = "FS-NFS-Service"
             Ensure = "Present"
         }        
-
-        WindowsFeature NFSAdmin
-        {
-            Name = "RSAT-NFS-Admin"
-            Ensure = "Present"
-            DependsOn = "[WindowsFeature]NFSService"
-        }
 
         xFirewall LBProbePortRule
         {
