@@ -345,8 +345,8 @@
             "properties": {
                 "publisher": "Microsoft.Powershell",
                 "type": "DSC",
-                "typeHandlerVersion": "2.20",
-                "autoUpgradeMinorVersion": false,
+                "typeHandlerVersion": "2.23",
+                "autoUpgradeMinorVersion": true,
                 "settings": {
                     "modulesUrl": "[variables('s2dPrepModulesURL')]",
                     "configurationFunction": "[variables('s2dPrepFunction')]",
@@ -380,8 +380,8 @@
             "properties": {
                 "publisher": "Microsoft.Powershell",
                 "type": "DSC",
-                "typeHandlerVersion": "2.20",
-                "autoUpgradeMinorVersion": false,
+                "typeHandlerVersion": "2.23",
+                "autoUpgradeMinorVersion": true,
                 "settings": {
                     "modulesUrl": "[variables('s2dConfigModulesURL')]",
                     "configurationFunction": "[variables('s2dConfigFunction')]",
@@ -413,6 +413,38 @@
                         "witnessStorageKey": "[listKeys(resourceId('Microsoft.Storage/storageAccounts',variables('witnessStorageName')),variables('apiVersionStorage')).keys[0].value]"
                     }
                 }
+            }
+        },
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "[concat(variables('vmNamePrefix'),copyindex(),'/IaaSAntimalware')]",
+            "apiVersion": "2015-06-15",
+            "location": "[resourceGroup().location]",
+            "dependsOn": [
+                "virtualMachineLoop",
+                "virtualMachineExtensionLoop",
+                "[concat(variables('vmNamePrefix'),'0/s2dConfig')]"
+            ],
+            "copy": {
+                "name": "IaaSAntimalwareExtensionLoop",
+                "count": "[parameters('vmCount')]"
+            },
+            "properties": {
+                "publisher": "Microsoft.Azure.Security",
+                "type": "IaaSAntimalware",
+                "typeHandlerVersion": "1.5",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "AntimalwareEnabled": "true",
+                    "RealtimeProtectionEnabled": "true",
+                    "ScheduledScanSettings": {
+                        "isEnabled": "true",
+                        "scanType": "Quick",
+                        "day": "0",
+                        "time": "120"
+                    }
+                },
+                "protectedSettings": null
             }
         }
     ],
