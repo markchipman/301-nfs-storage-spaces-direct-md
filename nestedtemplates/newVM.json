@@ -63,7 +63,7 @@
                         "value": "[parameters('vmDiskSize')]"
                     },
                     "diskCaching": {
-                        "value": "None"
+                        "value": "ReadOnly"
                     },
                     "diskNamingPrefix": {
                         "value": "[concat(parameters('vmName'), '-data')]"
